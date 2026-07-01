@@ -70,7 +70,7 @@ p {
 a {
     /* Definindo fonte e tamanho dos links */
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.9em;
+    font-size: 0.88em;
     color: darkorange;
     transition: font-size 0.3s ease;
 }
@@ -157,7 +157,7 @@ span {
 #placar {
 
     /* Definindo Flexbox */
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     gap: 9px;
@@ -166,6 +166,8 @@ span {
     background-color: #f5f5f5;
     padding: 20px 40px;
     border-radius: 10px;
+    position: absolute;
+    top: 50;
 }
 
 .nome-time {
@@ -178,10 +180,15 @@ span {
     font-weight: 200;
 }
 
+#resultado {
+    font-size: 0.8em;
+}
+
 
 /* - - - - - - - - - - - - - - - - - */
 
 /* Seção do rodapé */
+
 
 #saldo {
     font-weight: bold;
@@ -196,16 +203,34 @@ span {
 
 /* - - - - - - - - - - - - - - - - - */
 
+/* Seção do título da página inicail */
+
+:root {
+    /* Definindo variáveis da margem */
+    --margen-esquerda: clamp(10px, 1vw, 19px);
+}
+
+#titulo {
+    line-height: 0.9; 
+    margin-left: var(--margen-esquerda);
+    font-size: clamp(1.3rem, 5vw, 2.5rem);
+}
+
 #parteTitulo {
     font-size: 120px; 
-    margin-left: -19px;
+    margin-left: calc(var(--margen-esquerda) * -1);
     transition: font-size 0.5s ease;
+    font-size: clamp(4rem, 10vw, 7.5rem);
 }
+
 
 /*=============================================*/
 
 /* EVENTOS DE ESTILIZAÇÃO */
 
+
+
+/* Ao passar o mouse sobre os elementos */
 button:hover {
     background-color: #e9a566;
 }
@@ -221,4 +246,11 @@ a:hover {
 
 h1:hover, span:hover {
     transform: scale(1.1);
+}
+
+
+/* Ao selecionar o texto da página */
+::selection {
+    background-color: #f3a65f;
+    color: #ffffff;
 }
