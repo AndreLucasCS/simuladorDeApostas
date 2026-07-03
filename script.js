@@ -27,7 +27,11 @@ let timeSelecionado = null;
 let timeNaoSelecionado = null;
 
 const obbs = [1.85, 2.40, 2.20, 2.10, 2.60, 2.50, 3.20, 3.00, 5.20, 6.30, 8.00, 12.00, 18.00, 15.00, 9.50, 8.50, 4.80, 5.80, 6.50, 4.60, 5.50, 4.80, 9.00, 7.50, 2.80];
-const times = ["Brasil", "Alemanha", "Argentina", "França", "Espanha", "Inglaterra", "Portugal", "Itália", "Marrocos", "Senegal", "Japão", "Cabo Verde", "Congo", "Bósnia", "Paraguai", "Austrália", "EUA", "México", "Colômbia", "Bélgica", "Suíça", "Uruguai", "Egito", "Equador", "Holanda"];
+const times = ["Brasil" /*1.85*/, "Alemanha" /*2.40*/, "Argentina" /*2.20*/, "França" /*2.10*/, "Espanha" /*2.60*/, "Inglaterra" /*2.50*/, "Portugal" /*3.20*/, "Itália" /*3.00*/, "Marrocos" /*5.20*/, "Senegal" /*6.30*/, "Japão" /*8.00*/, "Cabo Verde" /*12.00*/, "Congo" /*18.00*/, "Bósnia" /*15.00*/, "Paraguai" /*9.50*/, "Austrália" /*8.50*/, "EUA" /*4.80*/, "México" /*5.80*/, "Colômbia" /*6.50*/, "Bélgica" /*4.60*/, "Suíça" /*5.50*/, "Uruguai" /*4.80*/, "Egito" /*9.00*/, "Equador" /*7.50*/, "Holanda" /*2.80*/];
+
+const obbsNivel1 = [1.85, 2.40, 2.20, 2.10, 2.60, 2.50, 3.20, 3.00, 2.80]; // 1.00 a 4.00
+const obbsNivel2 = [5.20, 6.30, 4.80, 5.80, 6.50, 4.60, 5.50, 4.80, 7.50, 8.00]; // 4.00 a 8.00
+const obbsNivel3 = [12.00, 18.00, 15.00, 9.50, 8.50, 9.00]; // +8.00
 
 
 /* Elementos do DOM - - - - - - - - - - - - - */
@@ -64,8 +68,73 @@ function randomNum(min, max) {
 /* Função para reescrever a página com novos times e odds - - */
 function prepararJogo() {
 
+
+
     time1 = randomNum(0, times.length - 1);
-    time2 = randomNum(0, times.length - 1);
+    let obbtime2;
+    
+    // chance de 50% do concorrente ter o mesmo nível
+    if (randomNum(0, 10) < 5) {
+
+        // verificado se o primeiro time faz parte do nível 1 ------------
+        for (let i = 0; i < obbsNivel1.length; i++) {
+
+            if (obbsNivel1[i] === obbs[time1]){
+
+
+                // definindo o obb do time 2
+                obbtime2 = obbsNivel1[randomNum(0, obbsNivel1.length - 1)]
+
+                // procurando time 2 na lista de obbs glabal
+                for (let i = 0; i < obbs.length; i++) {
+                    if (obbs[i] === obbtime2) {
+                        time2 = i
+                    }
+                };
+            }
+        } 
+
+        // verificado se o primeiro time faz parte do nível 2 ------------
+        for (let i = 0; i < obbsNivel2.length; i++) {
+            if (obbsNivel2[i] === obbs[time1]){
+
+
+                // definindo o obb do time 2
+                obbtime2 = obbsNivel2[randomNum(0, obbsNivel2.length - 1)]
+
+                // procurando time 2 na lista de obbs glabal
+                for (let i = 0; i < obbs.length; i++) {
+                    if (obbs[i] === obbtime2) {
+                        time2 = i
+                    }
+                };
+            }
+        } 
+
+        // verificado se o primeiro time faz parte do nível 1 ------------
+        for (let i = 0; i < obbsNivel3.length; i++) {
+            if (obbsNivel3[i] === obbs[time1]){
+
+
+                // definindo o obb do time 2
+                obbtime2 = obbsNivel3[randomNum(0, obbsNivel3.length - 1)]
+
+                // procurando time 2 na lista de obbs glabal
+                for (let i = 0; i < obbs.length; i++) {
+                    if (obbs[i] === obbtime2) {
+                        time2 = i
+                    }
+                };
+            }
+        } 
+
+    } else {
+        time2 = randomNum(0, times.length - 1);
+    }
+
+
+
+
     buttonTime1.textContent = times[time1];
     buttonTime2.textContent = times[time2];
     nomeTime1.textContent = times[time1];
@@ -87,7 +156,7 @@ function prepararJogo() {
 function calcularGanho() {
 
     aposta = parseFloat(inputAposta.value);
-    ganho = aposta * obbs[timeSelecionado];
+    ganho = aposta * (Math.sqrt(obbs[timeSelecionado] + 0.2));
 
     if (inputAposta.value.trim() === "") {
         pGanho.textContent = "Possível ganho: $0.00";
@@ -131,17 +200,13 @@ function apresentarResultado() {
     }, 100); 
 
 
-    // loop para atualizar o placar várias vezes
-    for (let i = 0; i < randomNum(1, 6); i++) {
+    // loop para atualizar o placar várias vezes agendadas
+    for (let i = 0; i < randomNum(1, 5); i++) {
 
         // calculando tempo de atualização do placar
         tempo = randomNum(600, 4000);
         tempo = tempo + tempoAnterior;
         tempoAnterior = tempo;
-
-        console.log(`randomNum: ${randomNum(0, 100)}, forcaSelecionado: ${forcaSelecionado}, forcaNaoSelecionado: ${forcaNaoSelecionado}, tempo: ${tempo}`);
-
-        
 
         // agendando atualização do placar após o tempo calculado
         setTimeout(() => {
@@ -149,14 +214,15 @@ function apresentarResultado() {
             // calculando qual time marcou o ponto
             if (randomNum(0, 100) <= (forcaSelecionado / (forcaSelecionado + forcaNaoSelecionado) * 100)) { 
                 
-                //foi o time selecionado que marcou?
+                // foi o time selecionado que marcou?
 
                 if (timeSelecionado === time1) {
                     pontos1++;
+                    inclinacao = inclinacao - 3;
                 } else {
                     pontos2++;
+                    inclinacao = inclinacao + 3;
                 }
-                console.log('Ponto para o time selecionado!');
 
             } else if (randomNum(0, 100) <= (forcaNaoSelecionado / (forcaSelecionado + forcaNaoSelecionado) * 100)) { 
                 
@@ -164,11 +230,12 @@ function apresentarResultado() {
 
                 if (timeNaoSelecionado === time2) {
                     pontos2++;
+                    inclinacao = inclinacao + 3;
                 } else {
                     pontos1++;
+                    inclinacao = inclinacao - 3;
                 }
 
-                console.log('Ponto para o time não selecionado!');
             }
 
             // apresentando o placar atualizado no DOM
@@ -179,12 +246,10 @@ function apresentarResultado() {
 
             if (pontos1 > pontos2) {
                 resultado.textContent = `${times[time1]} está vencendo!`;
-                inclinacao = inclinacao - 3;
             } else if (pontos2 > pontos1) {
                 resultado.textContent = `${times[time2]} está vencendo!`;
-                inclinacao = inclinacao + 3;
             } else {
-                resultado.textContent = "Empate!";
+                resultado.textContent = "Estão empatados!";
                 inclinacao = 0;
             }
 
@@ -195,7 +260,7 @@ function apresentarResultado() {
     }
 
 
-    // finalizando o jogo e apresentando o resultado final
+    // finalizando o jogo e apresentando o resultado final ------------
     setTimeout(() => {
 
         placar.style.transition = "transform 0.5s ease";
@@ -203,10 +268,10 @@ function apresentarResultado() {
 
         
         if (pontos1 > pontos2 && time1 === timeSelecionado) { 
-            // o time 1 venceu? você apostou nele?
-            resultado.textContent = `${times[time1]} venceu!`;
 
-            
+            // o time 1 venceu? você apostou nele?
+
+            resultado.textContent = `${times[time1]} venceu!`;
             status.style.display = "block";
             status.textContent = "Você ganhou sua aposta!";
             setTimeout(() => {
@@ -214,6 +279,11 @@ function apresentarResultado() {
                 status.textContent = "";
             }, 3000);
 
+            // mudando o pSaldo
+            pSaldo.style.fontSize = "1.3em";
+            setTimeout(() => {
+                pSaldo.style.fontSize = "1.1em";
+            }, 600);
             saldo = saldo + ganho + aposta
             pSaldo.textContent = `$ ${saldo.toFixed(2)}`;
 
@@ -229,6 +299,11 @@ function apresentarResultado() {
                 status.textContent = "";
             }, 3000);
 
+            // mudando pSaldo
+            pSaldo.style.fontSize = "1.3em";
+            setTimeout(() => {
+                pSaldo.style.fontSize = "1.1em";
+            }, 600);
             saldo = saldo + ganho + aposta
             pSaldo.textContent = `$ ${saldo.toFixed(2)}`;
 
@@ -236,11 +311,18 @@ function apresentarResultado() {
             
             // caso haja um empate o jogo recomeça
             resultado.textContent = "Ocorreu um empate...";
+
+            // mudando o pSaldo
             saldo = saldo + aposta;
             pSaldo.textContent = `$ ${saldo.toFixed(2)}`;
+            pSaldo.style.fontSize = "1.3em";
+            setTimeout(() => {
+                pSaldo.style.fontSize = "1.1em";
+            }, 600);
 
             status.style.display = "block";
             status.textContent = "O jogo empatou, sua aposta não foi considerada!";
+
             setTimeout(() => {
                 status.style.display = "none";
                 status.textContent = "";
@@ -248,10 +330,13 @@ function apresentarResultado() {
 
         } else {
 
+            
+
             // caso você perca
             status.style.display = "block";
             status.textContent = "Você perdeu sua aposta!";
             inputAposta.value = null;
+
             setTimeout(() => {
                 status.style.display = "none";
                 status.textContent = "";
@@ -262,7 +347,8 @@ function apresentarResultado() {
         pontos1 = 0;
         pontos2 = 0;
         tempo = 0;
-        tempoAnterior
+        aposta = 0;
+        tempoAnterior = 0;
         inclinacao = 0;
         placar.style.display = "none";
         timeSelecionado = null;
@@ -276,12 +362,6 @@ function apresentarResultado() {
     }, tempo + 1500);
 
 } 
-
-
-/* Função para confirmar que a página foi reescrita e preparada */
-window.addEventListener('DOMContentLoaded', () => {
-    prepararJogo();
-});
 
 
 
@@ -321,8 +401,13 @@ buttonTime2.addEventListener("click", () => {
 
 /* Evento de clique no botão de apostar - - - - - - - - - */
 buttonApostar.addEventListener("click", () => {
-    if (timeSelecionado != null && aposta != 0) {
 
+    if (timeSelecionado !== null && aposta != 0 && !Number.isNaN(aposta) ) {
+
+        pSaldo.style.fontSize = "1.3em";
+        setTimeout(() => {
+            pSaldo.style.fontSize = "1.1em";
+        }, 600);
         saldo = saldo - aposta
         pSaldo.textContent = `$ ${saldo.toFixed(2)}`;
         apresentarResultado();
@@ -332,7 +417,7 @@ buttonApostar.addEventListener("click", () => {
         setTimeout(() => {
             status.style.display = "none";
             status.textContent = "";
-        }, 3000);
+        }, 5000);
     }
 });
 
