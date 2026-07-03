@@ -70,6 +70,7 @@ function prepararJogo() {
     buttonTime2.textContent = times[time2];
     nomeTime1.textContent = times[time1];
     nomeTime2.textContent = times[time2];
+    pGanho.textContent = "Possível ganho: $0.00";
     pontosTime1.textContent = "0";
     pontosTime2.textContent = "0";
 
@@ -205,23 +206,38 @@ function apresentarResultado() {
             // o time 1 venceu? você apostou nele?
             resultado.textContent = `${times[time1]} venceu!`;
 
+            
+            status.style.display = "block";
+            status.textContent = "Você ganhou sua aposta!";
+            setTimeout(() => {
+                status.style.display = "none";
+                status.textContent = "";
+            }, 3000);
+
             saldo = saldo + ganho + aposta
-            pSaldo.textContent = `$ ${saldo}`;
+            pSaldo.textContent = `$ ${saldo.toFixed(2)}`;
 
         } else if (pontos2 > pontos1 && time2 === timeSelecionado) { 
 
             // o time 2 venceu? você apostou nele?
             resultado.textContent = `${times[time2]} venceu!`;
 
+            status.style.display = "block";
+            status.textContent = "Você ganhou sua aposta!";
+            setTimeout(() => {
+                status.style.display = "none";
+                status.textContent = "";
+            }, 3000);
+
             saldo = saldo + ganho + aposta
-            pSaldo.textContent = `$ ${saldo}`;
+            pSaldo.textContent = `$ ${saldo.toFixed(2)}`;
 
         } else if (pontos1 === pontos2) { 
             
             // caso haja um empate o jogo recomeça
             resultado.textContent = "Ocorreu um empate...";
             saldo = saldo + aposta;
-            pSaldo.textContent = `$ ${saldo}`;
+            pSaldo.textContent = `$ ${saldo.toFixed(2)}`;
 
             status.style.display = "block";
             status.textContent = "O jogo empatou, sua aposta não foi considerada!";
@@ -235,6 +251,7 @@ function apresentarResultado() {
             // caso você perca
             status.style.display = "block";
             status.textContent = "Você perdeu sua aposta!";
+            inputAposta.value = null;
             setTimeout(() => {
                 status.style.display = "none";
                 status.textContent = "";
@@ -307,7 +324,7 @@ buttonApostar.addEventListener("click", () => {
     if (timeSelecionado != null && aposta != 0) {
 
         saldo = saldo - aposta
-        pSaldo.textContent = `$ ${saldo}`;
+        pSaldo.textContent = `$ ${saldo.toFixed(2)}`;
         apresentarResultado();
     } else {
         status.style.display = "block";
