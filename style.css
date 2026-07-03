@@ -169,7 +169,13 @@ span {
     padding: 20px 40px;
     border-radius: 10px;
     position: absolute;
+    rotate: 0deg;
+    transform: scale(0);
     top: 50;
+
+    /* transições de animação */
+    transition: transform 0.5s ease;
+    transition: rotate 0.2s ease;
 }
 
 .nome-time {
