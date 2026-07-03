@@ -214,6 +214,8 @@ function apresentarResultado() {
             // calculando qual time marcou o ponto
             if (randomNum(1,2) === 1) {
 
+                console.log("primeiro o time 2")
+
                 if (randomNum(0, 100) <= (forcaTime2 / (forcaTime2 + forcaTime1) * 100)) { 
                 
                     // foi o time 1 que marcou?
@@ -221,9 +223,7 @@ function apresentarResultado() {
                     pontos1++;
                     inclinacao = inclinacao - 3;
 
-                } 
-                
-                if (randomNum(0, 100) <= (forcaTime1 / (forcaTime2 + forcaTime1) * 100)) { 
+                } else if (randomNum(0, 100) <= (forcaTime1 / (forcaTime2 + forcaTime1) * 100)) { 
                     
                     // foi o time não 2 que marcou?
 
@@ -235,6 +235,9 @@ function apresentarResultado() {
 
             } else {
 
+                console.log("primeiro o time 1")
+
+
                 if (randomNum(0, 100) <= (forcaTime1 / (forcaTime1 + forcaTime2) * 100)) { 
                     
                     // foi o time 1 que marcou?
@@ -242,9 +245,7 @@ function apresentarResultado() {
                     pontos1++;
                     inclinacao = inclinacao - 3;
 
-                    }
-                    
-                if (randomNum(0, 100) <= (forcaTime2 / (forcaTime1 + forcaTime2) * 100)) { 
+                } else if (randomNum(0, 100) <= (forcaTime2 / (forcaTime1 + forcaTime2) * 100)) { 
                     
                     // foi o time não 2 que marcou?
 
@@ -359,6 +360,9 @@ function apresentarResultado() {
                 status.textContent = "";
             }, 3000);
         }
+
+        console.log(`fim de jogo (${pontos1} x ${pontos2})`)
+        console.log("-----------------------")
 
         // reiniciando placar
         pontos1 = 0;
