@@ -217,7 +217,7 @@ span {
 
 :root {
     /* Definindo variáveis da margem */
-    --margen-esquerda: clamp(10px, 1vw, 19px);
+    --margen-esquerda: clamp(7px, 1vw, 19px);
 }
 
 #titulo {
