@@ -180,8 +180,8 @@ function calcularGanho() {
 function apresentarResultado() {
 
     // declarando variáveis de controle do placar
-    let forcaSelecionado = 1 / obbs[timeSelecionado];
-    let forcaNaoSelecionado = 1 / obbs[timeNaoSelecionado];
+    let forcaTime1 = 1 / obbs[time1];
+    let forcaTime2 = 1 / obbs[time2];
     let tempoAnterior = 0;
     let tempo = 0;
     let inclinacao = 0;
@@ -212,29 +212,46 @@ function apresentarResultado() {
         setTimeout(() => {
 
             // calculando qual time marcou o ponto
-            if (randomNum(0, 100) <= (forcaSelecionado / (forcaSelecionado + forcaNaoSelecionado) * 100)) { 
-                
-                // foi o time selecionado que marcou?
+            if (randomNum(1,2) === 1) {
 
-                if (timeSelecionado === time1) {
+                if (randomNum(0, 100) <= (forcaTime2 / (forcaTime2 + forcaTime1) * 100)) { 
+                
+                    // foi o time 1 que marcou?
+
                     pontos1++;
                     inclinacao = inclinacao - 3;
-                } else {
+
+                } 
+                
+                if (randomNum(0, 100) <= (forcaTime1 / (forcaTime2 + forcaTime1) * 100)) { 
+                    
+                    // foi o time não 2 que marcou?
+
+                    pontos2++;
+                    inclinacao = inclinacao + 3;
+
+                }
+                
+
+            } else {
+
+                if (randomNum(0, 100) <= (forcaTime1 / (forcaTime1 + forcaTime2) * 100)) { 
+                    
+                    // foi o time 1 que marcou?
+
+                    pontos1++;
+                    inclinacao = inclinacao - 3;
+
+                    }
+                    
+                if (randomNum(0, 100) <= (forcaTime2 / (forcaTime1 + forcaTime2) * 100)) { 
+                    
+                    // foi o time não 2 que marcou?
+
                     pontos2++;
                     inclinacao = inclinacao + 3;
                 }
-
-            } else if (randomNum(0, 100) <= (forcaNaoSelecionado / (forcaSelecionado + forcaNaoSelecionado) * 100)) { 
                 
-                // foi o time não selecionado que marcou?
-
-                if (timeNaoSelecionado === time2) {
-                    pontos2++;
-                    inclinacao = inclinacao + 3;
-                } else {
-                    pontos1++;
-                    inclinacao = inclinacao - 3;
-                }
 
             }
 
